@@ -1,0 +1,12 @@
+package api_inovacao.repository;
+
+import api_inovacao.model.User;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import java.util.Optional;
+
+public interface UserRepository extends MongoRepository<User, String> {
+
+    // Esse método será fundamental para o Spring Security encontrar o usuário na hora do Login
+    Optional<User> findByEmail(String email);
+
+}
