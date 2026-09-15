@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Segredos (senha do banco, secret do JWT, chave da IA) ###
+.env

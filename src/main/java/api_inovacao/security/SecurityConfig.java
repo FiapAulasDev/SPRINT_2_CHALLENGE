@@ -30,9 +30,13 @@ public class SecurityConfig {
                         // Rota de login deve ser pública para qualquer um tentar entrar
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
 
+                        // Rota interna de erro do Spring: sem isso, 404/400 viram 403 sem mensagem
+                        .requestMatchers("/error").permitAll()
+
                         // Regras de negócio da Etapa 1 (Orientações Estratégicas)
-                        .requestMatchers(HttpMethod.POST, "/api/estrategias").hasRole("LIDER")
-                        .requestMatchers(HttpMethod.GET, "/api/estrategias").authenticated()
+                        // "/**" cobre também /api/estrategias/{id} e /api/estrategias/vigente
+                        .requestMatchers(HttpMethod.GET, "/api/estrategias/**").authenticated()
+                        .requestMatchers("/api/estrategias/**").hasRole("LIDER")
 
                         // Bloqueia qualquer outra rota não mapeada
                         .anyRequest().authenticated()
