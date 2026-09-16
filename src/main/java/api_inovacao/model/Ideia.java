@@ -36,4 +36,10 @@ public class Ideia {
     // Vínculo com a estratégia vigente (o título é copiado para evitar buscar a estratégia a cada listagem)
     private String estrategiaId;
     private String estrategiaTitulo;
+
+    // Análise de viabilidade gerada pela IA (Google Gemini) para ajudar o Gestor a priorizar
+    private Integer pontuacaoViabilidade; // 0 a 100
+    private String justificativaIa;
+    private String recomendacaoIa;
+    private LocalDateTime analisadoIaEm;
 }
