@@ -34,3 +34,5 @@ build/
 
 ### Segredos (senha do banco, secret do JWT, chave da IA) ###
 .env
+.env.*
+!.env.example
