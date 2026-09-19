@@ -12,6 +12,7 @@ import com.aguia_branca.app.data.remote.dto.IdeiaResponse
 import com.aguia_branca.app.data.remote.dto.LoginResponse
 import com.aguia_branca.app.data.remote.dto.ProjetoRequest
 import com.aguia_branca.app.data.remote.dto.ProjetoResponse
+import com.aguia_branca.app.data.remote.dto.RegisterRequest
 import com.aguia_branca.app.data.remote.dto.ResumoIdeiasResponse
 import com.aguia_branca.app.data.remote.dto.ResumoProjetosResponse
 import com.aguia_branca.app.data.remote.dto.StatusIdeia
@@ -30,6 +31,9 @@ interface ApiService {
 
     @POST("api/auth/login")
     suspend fun login(@Body body: AuthenticationRequest): LoginResponse
+
+    @POST("api/auth/register")
+    suspend fun register(@Body body: RegisterRequest): UsuarioResponse
 
     @GET("api/usuarios/me")
     suspend fun meuUsuario(): UsuarioResponse

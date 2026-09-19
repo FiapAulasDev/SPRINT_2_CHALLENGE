@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aguia_branca.app.data.model.User
 import com.aguia_branca.app.data.remote.ApiException
+import com.aguia_branca.app.data.remote.dto.Role
 import com.aguia_branca.app.data.repository.AuthRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -39,6 +40,16 @@ class AuthViewModel : ViewModel() {
                 }
                 .onFailure { error ->
                     onError((error as? ApiException)?.message ?: "Erro ao entrar")
+                }
+        }
+    }
+
+    fun register(nome: String, email: String, senha: String, role: Role, onSuccess: () -> Unit, onError: (String) -> Unit) {
+        viewModelScope.launch {
+            repository.register(nome, email, senha, role)
+                .onSuccess { onSuccess() }
+                .onFailure { error ->
+                    onError((error as? ApiException)?.message ?: "Erro ao criar conta")
                 }
         }
     }

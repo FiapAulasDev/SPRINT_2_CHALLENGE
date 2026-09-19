@@ -45,7 +45,7 @@ fun AppNavigation() {
             LoginScreen(navController, authViewModel)
         }
         composable("register") {
-            RegisterScreen(navController)
+            RegisterScreen(navController, authViewModel)
         }
         composable("home") {
             HomeScreen(navController, authViewModel)

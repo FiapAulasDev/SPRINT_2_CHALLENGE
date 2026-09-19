@@ -5,6 +5,13 @@ data class AuthenticationRequest(
     val senha: String
 )
 
+data class RegisterRequest(
+    val nome: String,
+    val email: String,
+    val senha: String,
+    val role: Role
+)
+
 data class LoginResponse(
     val token: String
 )

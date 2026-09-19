@@ -9,10 +9,11 @@ class AuthInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val original = chain.request()
 
-        val isLoginRequest = original.url.encodedPath.endsWith("/api/auth/login")
+        val isPublicAuthRequest = original.url.encodedPath.endsWith("/api/auth/login") ||
+            original.url.encodedPath.endsWith("/api/auth/register")
         val token = TokenStore.getToken()
 
-        val request = if (!isLoginRequest && token != null) {
+        val request = if (!isPublicAuthRequest && token != null) {
             original.newBuilder()
                 .addHeader("Authorization", "Bearer $token")
                 .build()
@@ -22,7 +23,7 @@ class AuthInterceptor : Interceptor {
 
         val response = chain.proceed(request)
 
-        if (response.code == 401 && !isLoginRequest && token != null) {
+        if (response.code == 401 && !isPublicAuthRequest && token != null) {
             TokenStore.clearToken()
             SessionEvents.notifySessionExpired()
         }

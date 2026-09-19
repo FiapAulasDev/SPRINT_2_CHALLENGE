@@ -5,6 +5,7 @@ import com.aguia_branca.app.data.model.User
 import com.aguia_branca.app.data.remote.JwtUtils
 import com.aguia_branca.app.data.remote.RetrofitClient
 import com.aguia_branca.app.data.remote.dto.AuthenticationRequest
+import com.aguia_branca.app.data.remote.dto.RegisterRequest
 import com.aguia_branca.app.data.remote.dto.UsuarioResponse
 import com.aguia_branca.app.data.remote.safeApiCall
 
@@ -15,6 +16,14 @@ class AuthRepository {
         val token = loginResult.getOrElse { return Result.failure(it) }.token
         TokenStore.saveToken(token)
         return meuPerfil()
+    }
+
+    suspend fun register(nome: String, email: String, senha: String, role: com.aguia_branca.app.data.remote.dto.Role): Result<Unit> {
+        val result = safeApiCall {
+            RetrofitClient.api.register(RegisterRequest(nome.trim(), email.trim(), senha, role))
+        }
+        result.getOrElse { return Result.failure(it) }
+        return Result.success(Unit)
     }
 
     fun logout() {
