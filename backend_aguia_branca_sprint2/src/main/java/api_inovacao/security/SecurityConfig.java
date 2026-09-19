@@ -33,8 +33,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // Desativa proteção CSRF, pois a API é stateless (não usa sessão)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        // Rota de login deve ser pública para qualquer um tentar entrar
-                        .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                        // Login e cadastro são públicos para permitir a entrada de novos usuários
+                        .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/auth/register").permitAll()
 
                         // Rota interna de erro do Spring: sem isso, 404/400 viram 403 sem mensagem
                         .requestMatchers("/error").permitAll()

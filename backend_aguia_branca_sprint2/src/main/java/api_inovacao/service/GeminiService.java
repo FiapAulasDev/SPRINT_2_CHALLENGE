@@ -39,7 +39,9 @@ public class GeminiService {
                          @Value("${gemini.api.key:}") String apiKey,
                          @Value("${gemini.api.modelo}") String modelo) {
         this.apiKey = apiKey;
-        this.modelo = modelo;
+        // Aceita tanto "gemini-2.5-flash" quanto "models/gemini-2.5-flash"
+        // no .env, evitando gerar a URL inválida /models/models/....
+        this.modelo = normalizarModelo(modelo);
 
         // Timeouts para a API nunca ficar travada esperando o Google responder
         HttpClient httpClient = HttpClient.newBuilder()
@@ -80,14 +82,34 @@ public class GeminiService {
                     .retrieve()
                     .body(String.class);
         } catch (RestClientResponseException ex) {
+            String detalhe = ex.getResponseBodyAsString();
+            if (detalhe == null || detalhe.isBlank()) {
+                detalhe = ex.getStatusText();
+            }
             throw new ResponseStatusException(HttpStatus.BAD_GATEWAY,
-                    "O Gemini recusou a requisição (HTTP " + ex.getStatusCode().value() + "). Verifique a GEMINI_API_KEY e o modelo configurado.");
+                    "O Gemini recusou a requisição (HTTP " + ex.getStatusCode().value() + "): " + resumirErro(detalhe));
         } catch (RestClientException ex) {
             throw new ResponseStatusException(HttpStatus.BAD_GATEWAY,
                     "Não foi possível falar com o Gemini: " + ex.getMessage());
         }
 
         return extrairAnalise(respostaBruta);
+    }
+
+    private String normalizarModelo(String modelo) {
+        if (modelo == null || modelo.isBlank()) {
+            return "gemini-2.5-flash";
+        }
+        String normalizado = modelo.trim();
+        while (normalizado.startsWith("models/")) {
+            normalizado = normalizado.substring("models/".length());
+        }
+        return normalizado;
+    }
+
+    private String resumirErro(String detalhe) {
+        String limpo = detalhe.replaceAll("\\s+", " ").trim();
+        return limpo.length() > 500 ? limpo.substring(0, 500) + "..." : limpo;
     }
 
     private String montarPrompt(Ideia ideia, Estrategia estrategiaVigente) {

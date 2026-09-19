@@ -11,6 +11,8 @@ public interface UserRepository extends MongoRepository<User, String> {
     // Esse método será fundamental para o Spring Security encontrar o usuário na hora do Login
     Optional<User> findByEmail(String email);
 
+    boolean existsByEmailIgnoreCase(String email);
+
     // Ranking de Inovação (gamificação): só quem pode ter ideias aprovadas pontua
     List<User> findTop5ByRoleOrderByPontosDesc(Role role);
 
