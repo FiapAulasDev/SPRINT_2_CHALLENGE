@@ -1,0 +1,1347 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-09-16T00:29:03.410Z",
+  "__export_source": "insomnia.desktop.app:v9.0.0",
+  "resources": [
+    {
+      "_id": "wrk_aguia_etapa2",
+      "_type": "workspace",
+      "parentId": null,
+      "name": "API Inovacao Aguia Branca - Etapa 2",
+      "description": "Colecao de testes da Etapa 2 (Ideias, Projetos, IA Gemini e Dashboard). Rode as pastas de cima para baixo: os tokens e os ids sao preenchidos sozinhos a partir das respostas anteriores.",
+      "scope": "collection"
+    },
+    {
+      "_id": "env_aguia_base",
+      "_type": "environment",
+      "parentId": "wrk_aguia_etapa2",
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:8080",
+        "senha": "123456"
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "base_url",
+          "senha"
+        ]
+      },
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1789518543409
+    },
+    {
+      "_id": "fld_00_login",
+      "_type": "request_group",
+      "parentId": "wrk_aguia_etapa2",
+      "name": "00 - Login (comece por aqui)",
+      "description": "Os 3 perfis de teste. Senha de todos: 123456.",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -999999000
+    },
+    {
+      "_id": "req_login_operador",
+      "_type": "request",
+      "parentId": "fld_00_login",
+      "name": "Login operador",
+      "description": "Devolve o token JWT. As outras requisicoes puxam esse token sozinhas.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/auth/login",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"operador@aguiabranca.com\",\n  \"senha\": \"123456\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999998990,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_login_gestor",
+      "_type": "request",
+      "parentId": "fld_00_login",
+      "name": "Login gestor",
+      "description": "Devolve o token JWT. As outras requisicoes puxam esse token sozinhas.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/auth/login",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"gestor@aguiabranca.com\",\n  \"senha\": \"123456\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999998980,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_login_lider",
+      "_type": "request",
+      "parentId": "fld_00_login",
+      "name": "Login lider",
+      "description": "Devolve o token JWT. As outras requisicoes puxam esse token sozinhas.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/auth/login",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"lider@aguiabranca.com\",\n  \"senha\": \"123456\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999998970,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_01_estrategias",
+      "_type": "request_group",
+      "parentId": "wrk_aguia_etapa2",
+      "name": "01 - Estrategias (Lider)",
+      "description": "Base da Etapa 1: a ideia aprovada e o projeto sao ligados a estrategia vigente.",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -999997970
+    },
+    {
+      "_id": "req_estrategia_criar",
+      "_type": "request",
+      "parentId": "fld_01_estrategias",
+      "name": "Criar estrategia vigente",
+      "description": "Se ja existir uma estrategia vigente, pode pular. Sem estrategia vigente, aprovar ideia devolve 422.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/estrategias",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"titulo\": \"Eficiencia Operacional 2026\",\n  \"descricao\": \"Reduzir custos e aumentar a disponibilidade da frota\",\n  \"dataInicio\": \"2026-01-01\",\n  \"dataFim\": \"2026-12-31\",\n  \"vigente\": true\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_lider', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999997960,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_estrategia_listar",
+      "_type": "request",
+      "parentId": "fld_01_estrategias",
+      "name": "Listar estrategias",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/estrategias",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_lider', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999997950,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_estrategia_vigente",
+      "_type": "request",
+      "parentId": "fld_01_estrategias",
+      "name": "Ver estrategia vigente",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/estrategias/vigente",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_lider', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999997940,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_02_ideias",
+      "_type": "request_group",
+      "parentId": "wrk_aguia_etapa2",
+      "name": "02 - Ideias (Operador)",
+      "description": "CRUD de ideias. O autor vem do token e o status nasce PENDENTE.",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -999996940
+    },
+    {
+      "_id": "req_ideia_criar",
+      "_type": "request",
+      "parentId": "fld_02_ideias",
+      "name": "Criar ideia",
+      "description": "O id desta resposta alimenta as requisicoes de IA, avaliacao e projeto.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/ideias",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"titulo\": \"Roteirizacao inteligente\",\n  \"descricao\": \"Usar IA para montar as rotas dos onibus\",\n  \"beneficioEsperado\": \"Reduzir 10% do custo de combustivel\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_operador', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999996930,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_ideia_listar",
+      "_type": "request",
+      "parentId": "fld_02_ideias",
+      "name": "Listar ideias (filtro por status)",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/ideias?status=PENDENTE",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_operador', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999996920,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_ideia_minhas",
+      "_type": "request",
+      "parentId": "fld_02_ideias",
+      "name": "Minhas ideias",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/ideias/minhas",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_operador', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999996910,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_ideia_detalhe",
+      "_type": "request",
+      "parentId": "fld_02_ideias",
+      "name": "Detalhe da ideia",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/ideias/{% response 'body', 'req_ideia_criar', 'b64::JC5pZA==::46b', 'no-history', 60 %}",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_operador', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999996900,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_ideia_atualizar",
+      "_type": "request",
+      "parentId": "fld_02_ideias",
+      "name": "Editar a propria ideia (so se PENDENTE)",
+      "description": "",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/api/ideias/{% response 'body', 'req_ideia_criar', 'b64::JC5pZA==::46b', 'no-history', 60 %}",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"titulo\": \"Roteirizacao inteligente v2\",\n  \"descricao\": \"IA para montar rotas e escalas\",\n  \"beneficioEsperado\": \"Reduzir 12% do custo de combustivel\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_operador', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999996890,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_ideia_descartavel",
+      "_type": "request",
+      "parentId": "fld_02_ideias",
+      "name": "Criar ideia descartavel (para o DELETE)",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/ideias",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"titulo\": \"Ideia de teste para excluir\",\n  \"descricao\": \"Serve so para testar o DELETE\",\n  \"beneficioEsperado\": \"Nenhum\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_operador', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999996880,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_ideia_excluir",
+      "_type": "request",
+      "parentId": "fld_02_ideias",
+      "name": "Excluir a ideia descartavel",
+      "description": "Devolve 204 sem corpo.",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/api/ideias/{% response 'body', 'req_ideia_descartavel', 'b64::JC5pZA==::46b', 'no-history', 60 %}",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_operador', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999996870,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_03_ia",
+      "_type": "request_group",
+      "parentId": "wrk_aguia_etapa2",
+      "name": "03 - IA e avaliacao (Gestor)",
+      "description": "Pontuacao de viabilidade pelo Google Gemini e aprovacao/rejeicao da ideia.",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -999995870
+    },
+    {
+      "_id": "req_ia_analise",
+      "_type": "request",
+      "parentId": "fld_03_ia",
+      "name": "Analise de viabilidade pela IA",
+      "description": "Precisa da GEMINI_API_KEY no .env. Sem a chave devolve 503 explicando. Demora alguns segundos.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/ideias/{% response 'body', 'req_ideia_criar', 'b64::JC5pZA==::46b', 'no-history', 60 %}/analise-ia",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_gestor', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999995860,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_ia_ranking",
+      "_type": "request",
+      "parentId": "fld_03_ia",
+      "name": "Ranking das ideias pela nota da IA",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/ideias/ranking",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_gestor', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999995850,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_ideia_aprovar",
+      "_type": "request",
+      "parentId": "fld_03_ia",
+      "name": "Aprovar ideia (vincula a estrategia vigente)",
+      "description": "Repare que a resposta volta com estrategiaId e estrategiaTitulo preenchidos.",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/api/ideias/{% response 'body', 'req_ideia_criar', 'b64::JC5pZA==::46b', 'no-history', 60 %}/avaliacao",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"status\": \"APROVADA\",\n  \"comentario\": \"Alinhada com a meta de reducao de custos\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_gestor', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999995840,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_ideia_para_rejeitar",
+      "_type": "request",
+      "parentId": "fld_03_ia",
+      "name": "Criar ideia para rejeitar",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/ideias",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"titulo\": \"Cafe gratis a bordo\",\n  \"descricao\": \"Cafe para todos os passageiros\",\n  \"beneficioEsperado\": \"Satisfacao do cliente\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_operador', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999995830,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_ideia_rejeitar",
+      "_type": "request",
+      "parentId": "fld_03_ia",
+      "name": "Rejeitar ideia (comentario obrigatorio)",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/api/ideias/{% response 'body', 'req_ideia_para_rejeitar', 'b64::JC5pZA==::46b', 'no-history', 60 %}/avaliacao",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"status\": \"REJEITADA\",\n  \"comentario\": \"Custo alto e pouco retorno para a operacao\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_gestor', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999995820,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_04_projetos",
+      "_type": "request_group",
+      "parentId": "wrk_aguia_etapa2",
+      "name": "04 - Projetos (Gestor)",
+      "description": "CRUD de projetos. O ROI e calculado pela API; o cliente nunca envia.",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -999994820
+    },
+    {
+      "_id": "req_projeto_criar",
+      "_type": "request",
+      "parentId": "fld_04_projetos",
+      "name": "Criar projeto a partir da ideia aprovada",
+      "description": "Rode antes o \"Aprovar ideia\". A resposta traz roiPercentual = 30.00 e a estrategia herdada da ideia.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/projetos",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"titulo\": \"Roteirizacao - piloto\",\n  \"descricao\": \"Piloto em 20 onibus\",\n  \"etapa\": \"PLANEJAMENTO\",\n  \"status\": \"NAO_INICIADO\",\n  \"investimentoPrevisto\": 200000,\n  \"retornoEsperado\": 260000,\n  \"prazoInicio\": \"2026-02-01\",\n  \"prazoFim\": \"2026-08-31\",\n  \"ideiaId\": \"{% response 'body', 'req_ideia_criar', 'b64::JC5pZA==::46b', 'no-history', 60 %}\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_gestor', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999994810,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_projeto_listar",
+      "_type": "request",
+      "parentId": "fld_04_projetos",
+      "name": "Listar projetos",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/projetos",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_gestor', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999994800,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_projeto_filtros",
+      "_type": "request",
+      "parentId": "fld_04_projetos",
+      "name": "Listar com filtros (status e etapa)",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/projetos?status=EM_ANDAMENTO&etapa=EXECUCAO",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_gestor', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999994790,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_projeto_detalhe",
+      "_type": "request",
+      "parentId": "fld_04_projetos",
+      "name": "Detalhe do projeto",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/projetos/{% response 'body', 'req_projeto_criar', 'b64::JC5pZA==::46b', 'no-history', 60 %}",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_gestor', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999994780,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_projeto_atualizar",
+      "_type": "request",
+      "parentId": "fld_04_projetos",
+      "name": "Atualizar projeto inteiro (recalcula o ROI)",
+      "description": "Investimento 100000 e retorno 150000 viram roiPercentual 50.00.",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/api/projetos/{% response 'body', 'req_projeto_criar', 'b64::JC5pZA==::46b', 'no-history', 60 %}",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"titulo\": \"Roteirizacao - piloto ampliado\",\n  \"descricao\": \"Piloto em 30 onibus\",\n  \"etapa\": \"EXECUCAO\",\n  \"status\": \"EM_ANDAMENTO\",\n  \"investimentoPrevisto\": 100000,\n  \"retornoEsperado\": 150000,\n  \"prazoInicio\": \"2026-02-01\",\n  \"prazoFim\": \"2026-12-31\",\n  \"ideiaId\": \"{% response 'body', 'req_ideia_criar', 'b64::JC5pZA==::46b', 'no-history', 60 %}\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_gestor', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999994770,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_projeto_andamento",
+      "_type": "request",
+      "parentId": "fld_04_projetos",
+      "name": "Atualizar so o andamento (etapa + status)",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/api/projetos/{% response 'body', 'req_projeto_criar', 'b64::JC5pZA==::46b', 'no-history', 60 %}/andamento",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"etapa\": \"MONITORAMENTO\",\n  \"status\": \"EM_ANDAMENTO\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_gestor', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999994760,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_05_dashboard",
+      "_type": "request_group",
+      "parentId": "wrk_aguia_etapa2",
+      "name": "05 - Dashboard (Lider)",
+      "description": "Numeros consolidados: ROI total, lucro e funil de ideias.",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -999993760
+    },
+    {
+      "_id": "req_dash_resumo",
+      "_type": "request",
+      "parentId": "fld_05_dashboard",
+      "name": "Resumo completo do painel",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/dashboard/resumo",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_lider', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999993750,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_dash_ideias",
+      "_type": "request",
+      "parentId": "fld_05_dashboard",
+      "name": "So o funil de ideias",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/dashboard/ideias",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_lider', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999993740,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_dash_projetos",
+      "_type": "request",
+      "parentId": "fld_05_dashboard",
+      "name": "So os numeros dos projetos",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/dashboard/projetos",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_lider', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999993730,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_06_erros",
+      "_type": "request_group",
+      "parentId": "wrk_aguia_etapa2",
+      "name": "06 - Erros esperados",
+      "description": "Cada requisicao aqui DEVE falhar com o status que esta no nome. E assim que se mostra que as regras de negocio funcionam. Rode de cima para baixo.",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -999992730
+    },
+    {
+      "_id": "req_erro_ideia_apoio",
+      "_type": "request",
+      "parentId": "fld_06_erros",
+      "name": "Criar ideia PENDENTE de apoio (nao e erro)",
+      "description": "Os testes de 400 (rejeitar sem comentario) e 422 (projeto de ideia PENDENTE) usam o id desta ideia.",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/ideias",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"titulo\": \"Ideia pendente de apoio\",\n  \"descricao\": \"Fica PENDENTE de proposito para os testes de erro abaixo\",\n  \"beneficioEsperado\": \"Nenhum\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_operador', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999992720,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_erro_senha",
+      "_type": "request",
+      "parentId": "fld_06_erros",
+      "name": "401 - senha errada",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/auth/login",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"lider@aguiabranca.com\",\n  \"senha\": \"senha-errada\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999992710,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_erro_sem_token",
+      "_type": "request",
+      "parentId": "fld_06_erros",
+      "name": "401 - sem token",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/ideias",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -999992700,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_erro_gestor_cria_ideia",
+      "_type": "request",
+      "parentId": "fld_06_erros",
+      "name": "403 - gestor tentando criar ideia",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/ideias",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"titulo\": \"Nao pode\",\n  \"descricao\": \"Quem cadastra ideia e o operador\",\n  \"beneficioEsperado\": \"Nenhum\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_gestor', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999992690,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_erro_operador_avalia",
+      "_type": "request",
+      "parentId": "fld_06_erros",
+      "name": "403 - operador tentando avaliar",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/api/ideias/{% response 'body', 'req_ideia_criar', 'b64::JC5pZA==::46b', 'no-history', 60 %}/avaliacao",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"status\": \"APROVADA\",\n  \"comentario\": \"nao pode\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_operador', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999992680,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_erro_gestor_dashboard",
+      "_type": "request",
+      "parentId": "fld_06_erros",
+      "name": "403 - gestor no dashboard do lider",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/dashboard/resumo",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_gestor', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999992670,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_erro_titulo_vazio",
+      "_type": "request",
+      "parentId": "fld_06_erros",
+      "name": "400 - ideia com titulo vazio",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/ideias",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"titulo\": \"\",\n  \"descricao\": \"sem titulo\",\n  \"beneficioEsperado\": \"nenhum\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_operador', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999992660,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_erro_status_invalido",
+      "_type": "request",
+      "parentId": "fld_06_erros",
+      "name": "400 - filtro ?status=XPTO",
+      "description": "",
+      "method": "GET",
+      "url": "{{ _.base_url }}/api/ideias?status=XPTO",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_operador', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999992650,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_erro_rejeitar_sem_comentario",
+      "_type": "request",
+      "parentId": "fld_06_erros",
+      "name": "400 - rejeitar sem comentario",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/api/ideias/{% response 'body', 'req_erro_ideia_apoio', 'b64::JC5pZA==::46b', 'no-history', 60 %}/avaliacao",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"status\": \"REJEITADA\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_gestor', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999992640,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_erro_prazo_invertido",
+      "_type": "request",
+      "parentId": "fld_06_erros",
+      "name": "400 - prazo final antes do inicial",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/projetos",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"titulo\": \"Prazo errado\",\n  \"descricao\": \"Teste de validacao\",\n  \"etapa\": \"PLANEJAMENTO\",\n  \"status\": \"NAO_INICIADO\",\n  \"investimentoPrevisto\": 1000,\n  \"retornoEsperado\": 2000,\n  \"prazoInicio\": \"2026-10-01\",\n  \"prazoFim\": \"2026-03-01\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_gestor', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999992630,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_erro_reavaliar",
+      "_type": "request",
+      "parentId": "fld_06_erros",
+      "name": "409 - reavaliar ideia ja avaliada",
+      "description": "",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/api/ideias/{% response 'body', 'req_ideia_criar', 'b64::JC5pZA==::46b', 'no-history', 60 %}/avaliacao",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"status\": \"REJEITADA\",\n  \"comentario\": \"mudei de ideia\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_gestor', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999992620,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_erro_projeto_duplicado",
+      "_type": "request",
+      "parentId": "fld_06_erros",
+      "name": "409 - dois projetos para a mesma ideia",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/projetos",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"titulo\": \"Projeto duplicado\",\n  \"descricao\": \"A mesma ideia ja virou projeto\",\n  \"etapa\": \"PLANEJAMENTO\",\n  \"status\": \"NAO_INICIADO\",\n  \"investimentoPrevisto\": 1000,\n  \"retornoEsperado\": 2000,\n  \"prazoInicio\": \"2026-01-01\",\n  \"prazoFim\": \"2026-12-31\",\n  \"ideiaId\": \"{% response 'body', 'req_ideia_criar', 'b64::JC5pZA==::46b', 'no-history', 60 %}\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_gestor', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999992610,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_erro_ideia_pendente",
+      "_type": "request",
+      "parentId": "fld_06_erros",
+      "name": "422 - projeto a partir de ideia PENDENTE",
+      "description": "",
+      "method": "POST",
+      "url": "{{ _.base_url }}/api/projetos",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"titulo\": \"Projeto de ideia pendente\",\n  \"descricao\": \"So ideia APROVADA pode virar projeto\",\n  \"etapa\": \"PLANEJAMENTO\",\n  \"status\": \"NAO_INICIADO\",\n  \"investimentoPrevisto\": 1000,\n  \"retornoEsperado\": 2000,\n  \"prazoInicio\": \"2026-01-01\",\n  \"prazoFim\": \"2026-12-31\",\n  \"ideiaId\": \"{% response 'body', 'req_erro_ideia_apoio', 'b64::JC5pZA==::46b', 'no-history', 60 %}\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_gestor', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999992600,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "fld_07_limpeza",
+      "_type": "request_group",
+      "parentId": "wrk_aguia_etapa2",
+      "name": "07 - Limpeza (rode por ultimo)",
+      "description": "Apaga o que os testes criaram. Deixe para o fim: os testes de 409 precisam do projeto existindo.",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -999991600
+    },
+    {
+      "_id": "req_projeto_excluir",
+      "_type": "request",
+      "parentId": "fld_07_limpeza",
+      "name": "Excluir o projeto de teste",
+      "description": "Devolve 204 sem corpo.",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/api/projetos/{% response 'body', 'req_projeto_criar', 'b64::JC5pZA==::46b', 'no-history', 60 %}",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_gestor', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999991590,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    },
+    {
+      "_id": "req_ideia_apoio_excluir",
+      "_type": "request",
+      "parentId": "fld_07_limpeza",
+      "name": "Excluir a ideia de apoio (PENDENTE)",
+      "description": "So da certo porque ela continua PENDENTE: ideia avaliada nao pode ser excluida (409).",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/api/ideias/{% response 'body', 'req_erro_ideia_apoio', 'b64::JC5pZA==::46b', 'no-history', 60 %}",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {% response 'body', 'req_login_operador', 'b64::JC50b2tlbg==::46b', 'no-history', 60 %}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -999991580,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global"
+    }
+  ]
+}
