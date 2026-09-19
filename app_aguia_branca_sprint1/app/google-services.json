@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "482946383400",
+    "project_id": "challenge-aguia-branca-28054",
+    "storage_bucket": "challenge-aguia-branca-28054.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:482946383400:android:772bed9462c5b850323f1d",
+        "android_client_info": {
+          "package_name": "com.aguia_branca.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrXlEmGUdX4hWR5iOwh8femm2MOtYfFI4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
